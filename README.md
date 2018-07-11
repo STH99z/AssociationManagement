@@ -5,4 +5,4 @@ A computer course assignment, working on in-collage student association manageme
 frontend backend combined in Django(Python framework).  
 database -> sqlite3  
 template engine -> django  
-webpages -> MDB(Material Design for Bootstrap)  
+webpages -> MDB(Material Design of Bootstrap)  
