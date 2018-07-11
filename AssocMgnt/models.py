@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.deletion import DO_NOTHING, SET_NULL, SET_DEFAULT, CASCADE
+from django.utils.timezone import datetime, timedelta
 
 
 # Create your models here.
@@ -44,6 +45,9 @@ class Association(models.Model):
     created = models.BooleanField(verbose_name='是否已创建', default=False)
     createTime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     credit = models.IntegerField(default=100, null=False, verbose_name='信用点数')
+    deletionMark = models.BooleanField(default=False, verbose_name='解散标记')
+    deletionReason = models.TextField(null=True, verbose_name='解散原因')
+    deletionTime = models.DateTimeField(null=True, verbose_name='解散倒计时')
 
     class Meta:
         verbose_name = verbose_name_plural = '4.社团'
@@ -163,4 +167,3 @@ class BulletinApplication(ApplicationRecord):
     class Meta:
         verbose_name = verbose_name_plural = '9.公告发布申请'
         db_table = 'bulletin_app'
-
