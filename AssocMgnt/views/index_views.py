@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from . import render
 from django.http import HttpResponse
 from AssocMgnt.template_models import *
+from django.core.handlers.wsgi import WSGIRequest
 
 
 # Create your views here.
 
-def welcome(request):
+def welcome(request: WSGIRequest):
     staff_login_modal = tModal(
         'staff_login_modal',
         title='教务员工登录',

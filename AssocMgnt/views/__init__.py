@@ -1,5 +1,17 @@
 from functools import wraps
 from django.http import HttpResponseRedirect
+from django.core.handlers.wsgi import WSGIRequest
+from django.shortcuts import render as django_render
+
+
+def render(request, template_name, context):
+    ctx = default_context(request)
+    ctx.update(context)
+    return django_render(request, template_name, context=ctx)
+
+
+def default_context(request: WSGIRequest):
+    return {'user': request.user}
 
 
 def require_role(role):
