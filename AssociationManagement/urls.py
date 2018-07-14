@@ -19,6 +19,8 @@ from AssocMgnt.views import index_views
 
 urlpatterns = [
     path('', index_views.welcome),
+    path('login/', index_views.login),
+    path('logout/', index_views.logout),
     path('admin/', include('AssocMgnt.urls.urls_admin')),
     path('stuff/', include('AssocMgnt.urls.urls_stuff')),
     path('founder/', include('AssocMgnt.urls.urls_founder')),

@@ -14,15 +14,32 @@
           </li>
           {# 登录后才显示 #}
           {% if not user.is_anonymous %}
-            <li class="nav-item">
-              <a class="nav-link" href="#">特性</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">价格</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">意向</a>
-            </li>
+            {% if user.role == 0 %}
+              {#社团创立者#}
+              <li class="nav-item">
+                <a class="nav-link" href="#">我的社团</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">我的申请</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">其他社团</a>
+              </li>
+            {% elif user.role == 1 %}
+              {#教务员工#}
+              <li class="nav-item">
+                <a class="nav-link" href="#">社团列表</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">社团公告表</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">审核</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"></a>
+              </li>
+            {% endif %}
           {% endif %}
         </ul>
         {# 固定不显示 #}

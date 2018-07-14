@@ -11,7 +11,8 @@ def render(request, template_name, context):
 
 
 def default_context(request: WSGIRequest):
-    return {'user': request.user}
+    return {'user': request.user,
+            'params': request.content_params}
 
 
 def require_role(role):

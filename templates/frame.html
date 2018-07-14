@@ -4,9 +4,12 @@
 {% block body %}
   {% include "header_snippet.html" %}
   <main>
-    {% block content %}
-      <p>empty content block</p>
-    {% endblock content %}
+    <div class="top-padder"></div>
+    <div class="h-wrapper">
+      {% block content %}
+        <p>empty content block</p>
+      {% endblock content %}
+    </div>
   </main>
   {% include "footer_snippet.html" %}
 {% endblock body %}

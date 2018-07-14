@@ -1,0 +1,27 @@
+{% extends 'frame.html' %}
+{% load static %}
+
+{% block content %}
+  <div>
+    <!-- Card -->
+    <div class="card position-absolute"
+         style="min-width:500px;max-width:600px;width: 35%;height: 35%;top: 0;left: 0;bottom: 0;right: 0; margin: auto;">
+      <!-- Card image -->
+      <div class="card-body text-center bg-warning" style="height: 160px">
+        <i class="fa fa-warning fa-4x mt-4"
+           aria-hidden="true"></i>
+      </div>
+      <!-- Card content -->
+      <div class="card-body">
+        <!-- Title -->
+        <h4 class="card-title">登录失败！</h4>
+        <!-- Text -->
+        <p class="card-text">你可能输入了错误的uid或密码，请返回重试！</p>
+        <!-- Button -->
+        <a href="/" class="btn btn-warning">返回主页</a>
+      </div>
+
+    </div>
+    <!-- Card -->
+  </div>
+{% endblock %}

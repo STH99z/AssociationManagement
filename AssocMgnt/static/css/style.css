@@ -12,8 +12,8 @@ div.container-fluid {
     max-width: 1200px;
 }
 
-div#top-padder {
-    height: 80px;
+.top-padder {
+    min-height: 80px;
 }
 
 .background-color-white {

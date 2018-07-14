@@ -1,6 +1,6 @@
 {#id#}
 {#title#}
-<form action="login/" method="get">
+<form action="{{ modal.action }}" method="{{ modal.method|default:"post" }}">
   <div class="modal fade" id="{{ modal.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ modal.id }}Label"
        aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -20,6 +20,9 @@
             </div>
           {% endfor %}
         </div>
+        {% if modal.method|default:"post" == 'post' %}
+          {% csrf_token %}
+        {% endif %}
         <div class="modal-footer d-flex justify-content-center">
           {% for button in modal.buttons %}
             {% include "button_snippet.html" with button=button %}

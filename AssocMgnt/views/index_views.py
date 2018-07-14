@@ -1,14 +1,13 @@
 from . import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from AssocMgnt.template_models import *
 from django.core.handlers.wsgi import WSGIRequest
 
 
-# Create your views here.
-
 def welcome(request: WSGIRequest):
     staff_login_modal = tModal(
         'staff_login_modal',
+        action='login/',
         title='教务员工登录',
         fields=[tModalField('uid1', text='员工号', name='uid'),
                 tModalField('password1', text='密码', type='password', name='password')],
@@ -17,6 +16,7 @@ def welcome(request: WSGIRequest):
     )
     founder_login_modal = tModal(
         'founder_login_modal',
+        action='login/',
         title='社团负责人登录',
         fields=[tModalField('uid2', text='学号', name='uid'),
                 tModalField('password2', text='密码', type='password', name='password')],
@@ -32,3 +32,11 @@ def welcome(request: WSGIRequest):
         'founder_login_modal': founder_login_modal,
     }
     return render(request, 'welcome.html', context=context)
+
+
+def login(request: WSGIRequest):
+    return render(request, 'login_failed.html', {})
+
+
+def logout(request: WSGIRequest):
+    pass
