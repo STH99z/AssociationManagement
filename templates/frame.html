@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+  {% include "header_snippet.html" %}
+  <main>
+    {% block content %}
+      <p>empty content block</p>
+    {% endblock content %}
+  </main>
+  {% include "footer_snippet.html" %}
+{% endblock body %}

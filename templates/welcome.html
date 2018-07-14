@@ -1,0 +1,36 @@
+{% extends "frame.html" %}
+{% load static %}
+
+{% block title %}欢迎使用校内社团管理系统{% endblock title %}
+{% block content %}
+  <div class="h-wrapper">
+    <div id="top-padder"></div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <!-- Card -->
+          <div class="card">
+            <!-- Card image -->
+            <img class="card-img-top" src="{% static 'img/index_bg.jpg' %}"
+                 alt="Card image cap">
+            <!-- Card content -->
+            <div class="card-body background-color-white rounded z-depth-1" id="index-card-body">
+              <!-- Title -->
+              <div style="height: 30px;"></div>
+              <h4 class="card-title"><a>校内社团管理系统</a></h4>
+              <!-- Text -->
+              <p class="card-text text-black-50">帮助您更方便的处理学生社团事务</p>
+              <!-- Button -->
+              <div style="height:70px;"></div>
+              {% include "button_snippet.html" with button=staff_login_button %}
+              {% include "button_snippet.html" with button=founder_login_button %}
+            </div>
+          </div>
+          <!-- Card -->
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include "modal_snippet.html" with modal=staff_login_modal %}
+  {% include "modal_snippet.html" with modal=founder_login_modal %}
+{% endblock %}

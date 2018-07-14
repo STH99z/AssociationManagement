@@ -4,7 +4,7 @@ from django.contrib import admin
 from AssocMgnt.models import *
 
 admin.site.register(User)
-admin.site.register(StuffPermission)
+admin.site.register(StaffPermission)
 admin.site.register(Association)
 admin.site.register(Member)
 admin.site.register(Location)

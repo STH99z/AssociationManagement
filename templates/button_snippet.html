@@ -1,0 +1,23 @@
+{# btn_class #}
+{# data_toggle #}
+{# data_target #}
+{# data_dismiss #}
+{# text #}
+{% if button.tag == 'submit' %}
+  <button type="submit"
+          class="btn {{ button.btn_class|default:"btn-primary" }}"
+  >{{ button.text }}</button>
+{% elif button.tag == 'a' %}
+  <a href="{{ button.href|default:"" }}"
+     class="btn {{ button.btn_class|default:"btn-primary" }} btn-rounded mb-4"
+     data-toggle="{{ button.data_toggle|default:"" }}"
+     data-target="#{{ button.data_target|default:"" }}"
+     data-dismiss="{{ button.data_dismiss|default:"" }}"
+  >{{ button.text }}</a>
+{% else %}
+  <button class="btn {{ button.btn_class|default:"btn-primary" }}"
+          data-toggle="{{ button.data_toggle|default:"" }}"
+          data-target="#{{ button.data_target|default:"" }}"
+          data-dismiss="{{ button.data_dismiss|default:"" }}"
+  >{{ button.text }}</button>
+{% endif %}

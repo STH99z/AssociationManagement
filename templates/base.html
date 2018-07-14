@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+{% load static %}
+<head>
+  {% block head %}
+    {% block meta %}
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+    {% endblock meta %}
+    <title>{% block title %}Title{% endblock %}</title>
+    {% block links %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+      <!-- Your custom styles (optional) -->
+      <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% endblock links %}
+  {% endblock head %}
+</head>
+<body>
+{% block body %}
+  <p>empty body</p>
+{% endblock body %}
+<!-- SCRIPTS -->
+{% block scripts %}
+{% endblock scripts %}
+<!-- JQuery -->
+{% block jquery %}
+  <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+{% endblock jquery %}
+</body>
+</html>

@@ -19,8 +19,9 @@ from AssocMgnt import views
 
 urlpatterns = [
     path('', views.welcome),
-    path('admin/', include('AssocMgnt.urls_admin')),
-    path('stuff/', include('AssocMgnt.urls_stuff')),
-    path('founder/', include('AssocMgnt.urls_founder')),
+    path('admin/', include('AssocMgnt.urls.urls_admin')),
+    path('stuff/', include('AssocMgnt.urls.urls_stuff')),
+    path('founder/', include('AssocMgnt.urls.urls_founder')),
+    path('test/', include('AssocMgnt.urls.urls_test')),
     path('site_admin/', admin.site.urls),
 ]

@@ -1,0 +1,29 @@
+main {
+    text-align: center;
+}
+
+div.h-wrapper {
+    text-align: center;
+    margin-left: 6%;
+    margin-right: 6%;
+}
+
+div.container-fluid {
+    max-width: 1200px;
+}
+
+div#top-padder {
+    height: 80px;
+}
+
+.background-color-white {
+    background: rgba(255, 255, 255, .5);
+}
+
+#index-card-body {
+    position: absolute;
+    top: 30%;
+    height: 40%;
+    left: 55%;
+    width: 40%;
+}

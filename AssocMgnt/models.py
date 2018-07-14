@@ -7,12 +7,16 @@ from django.utils.timezone import datetime, timedelta
 # Create your models here.
 
 class User(AbstractUser):
+    ROLE_FOUNDER = 0
+    ROLE_STAFF = 1
+    ROLE_ADMIN = 2
     ROLES = (
-        (0, '社团创立者'),
-        (1, '教务员工'),
-        (2, '系统管理员')
+        (ROLE_FOUNDER, '社团创立者'),
+        (ROLE_STAFF, '教务员工'),
+        (ROLE_ADMIN, '系统管理员')
     )
 
+    uid = models.CharField(max_length=16, null=False, verbose_name='学号/员工号')
     realName = models.CharField(max_length=32, null=True, verbose_name='真实姓名')
     role = models.IntegerField(choices=ROLES, default=0, verbose_name='角色')
     tel = models.CharField(max_length=48, null=True, verbose_name='联系电话')
@@ -22,8 +26,42 @@ class User(AbstractUser):
         verbose_name_plural = verbose_name = '1.用户'
         db_table = 'user'
 
+    @staticmethod
+    def create_phone():
+        import random
+        prelist = ["130", "131", "132", "133", "134", "135", "136", "137",
+                   "138", "139", "147", "150", "151", "152", "153", "155",
+                   "156", "157", "158", "159", "186", "187", "188"]
+        return random.choice(prelist) + "".join(random.choice("0123456789") for i in range(8))
 
-class StuffPermission(models.Model):
+    @staticmethod
+    def create_founders():
+        from django.contrib.auth.hashers import make_password
+        User.objects.filter(role=User.ROLE_FOUNDER).delete()
+        for i in range(1, 31):
+            uid = '15124802' + '%02i' % i
+            pwd = uid
+            user = User(uid=uid, password=make_password(pwd), role=User.ROLE_FOUNDER, tel=create_phone(),
+                        username='User' + uid)
+            user.save()
+            print(user.username)
+
+    @staticmethod
+    def create_staffs():
+        from django.contrib.auth.hashers import make_password
+        User.objects.filter(role=User.ROLE_STAFF).delete()
+        for i in range(1, 6):
+            uid = 'S' + '%02i' % i
+            pwd = uid + uid
+            user = User(uid=uid, password=make_password(pwd), role=User.ROLE_STAFF, tel=create_phone(),
+                        username='Staff' + uid)
+            user.save()
+            perm = StaffPermission(staff=user)
+            perm.save()
+            print(user.username)
+
+
+class StaffPermission(models.Model):
     staff = models.ForeignKey(User, on_delete=CASCADE, db_column='staff', related_name='staff', verbose_name='教务员工')
     registration_perm = models.BooleanField(verbose_name='注册审核权', default=False, null=False)
     event_perm = models.BooleanField(verbose_name='活动审核权', default=False, null=False)
