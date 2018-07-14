@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from AssocMgnt import views
+from AssocMgnt.views import index_views
 
 urlpatterns = [
-    path('', views.welcome),
+    path('', index_views.welcome),
     path('admin/', include('AssocMgnt.urls.urls_admin')),
     path('stuff/', include('AssocMgnt.urls.urls_stuff')),
     path('founder/', include('AssocMgnt.urls.urls_founder')),

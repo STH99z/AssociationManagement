@@ -31,7 +31,3 @@ def welcome(request):
         'founder_login_modal': founder_login_modal,
     }
     return render(request, 'welcome.html', context=context)
-
-
-def test_top(request):
-    return render(request, 'top.html', context={})
