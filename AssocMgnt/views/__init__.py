@@ -4,6 +4,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render as django_render
 
 
+@wraps(django_render)
 def render(request, template_name, context):
     ctx = default_context(request)
     ctx.update(context)

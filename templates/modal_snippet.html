@@ -14,9 +14,18 @@
         <div class="modal-body mx-3">
           {% for field in modal.fields %}
             <div class="md-form mb-5">
-              <input type="{{ field.type }}" id="{{ field.id }}" class="form-control validate" name="{{ field.name }}">
-              <label data-error="{{ field.data_error }}" data-success="{{ field.data_success }}"
-                     for="{{ field.for }}">{{ field.text }}</label>
+              <input type="{{ field.type }}"
+                      {% if field.id %}
+                     id="{{ field.id }}"
+                      {% endif %}
+                     class="form-control validate" name="{{ field.name }}"
+                      {% if field.type == 'hidden' %}
+                     value="{{ field.text }}"
+                      {% endif %}>
+              {% if field.type != 'hidden' %}
+                <label data-error="{{ field.data_error }}" data-success="{{ field.data_success }}"
+                       for="{{ field.for }}">{{ field.text }}</label>
+              {% endif %}
             </div>
           {% endfor %}
         </div>

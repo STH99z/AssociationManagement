@@ -1,0 +1,26 @@
+{% extends 'level1.html' %}
+{% load static %}
+
+{% block title %}
+  社团列表
+{% endblock %}
+
+{% block content-left %}
+  <div class="card">
+    <h4 class="card-title mt-4 mb-4">请选择社团</h4>
+  </div>
+{% endblock %}
+
+{% block content-right %}
+  <div class="card">
+    <h4 class="card-title mt-4">社团列表</h4>
+    <div class="card-body">
+      {% for assoc in assoc_list %}
+        <p>{{ assoc.name }}</p>
+      {% empty %}
+        <p>您还没有已创建的社团，或社团创建申请未通过。</p>
+        {% include "button_snippet.html" with button=button %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

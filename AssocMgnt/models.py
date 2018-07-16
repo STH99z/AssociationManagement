@@ -22,8 +22,11 @@ class User(AbstractUser):
     tel = models.CharField(max_length=48, null=True, verbose_name='联系电话')
     createTime = models.DateTimeField(auto_now_add=True, verbose_name='注册时间')
 
+    def __str__(self):
+        return f'{User.ROLES[self.role][1]} {self.uid}'
+
     class Meta:
-        verbose_name_plural = verbose_name = '1.用户'
+        verbose_name_plural = verbose_name = '用户'
         db_table = 'user'
 
     @staticmethod
@@ -69,8 +72,15 @@ class StaffPermission(models.Model):
     bulletin_perm = models.BooleanField(verbose_name='公告审核权', default=False, null=False)
 
     class Meta:
-        verbose_name_plural = verbose_name = '2.教务员工权限'
+        verbose_name_plural = verbose_name = '教务员工权限'
         db_table = 'perm'
+
+    def __str__(self):
+        return f'{self.staff.uid} 权限: ' \
+               f'R{"√" if self.registration_perm else "×"} ' \
+               f'E{"√" if self.event_perm else "×"} ' \
+               f'L{"√" if self.location_perm else "×"} ' \
+               f'B{"√" if self.bulletin_perm else "×"}'
 
 
 class Association(models.Model):
@@ -87,8 +97,11 @@ class Association(models.Model):
     deletionReason = models.TextField(null=True, verbose_name='解散原因')
     deletionTime = models.DateTimeField(null=True, verbose_name='解散倒计时')
 
+    def __str__(self):
+        return f'社团 {self.name}'
+
     class Meta:
-        verbose_name = verbose_name_plural = '4.社团'
+        verbose_name = verbose_name_plural = '社团'
         db_table = 'association'
 
 
@@ -98,18 +111,25 @@ class Member(models.Model):
     name = models.CharField(max_length=32, null=False, verbose_name='姓名')
     tel = models.CharField(max_length=48, null=False, verbose_name='联系电话')
 
+    def __str__(self):
+        return f'社团 {self.association.name} 成员 {self.name} 联系电话 {self.tel}'
+
     class Meta:
-        verbose_name_plural = verbose_name = '5.社团成员'
+        verbose_name_plural = verbose_name = '社团成员'
         db_table = 'member'
 
 
 class Location(models.Model):
     name = models.TextField(verbose_name='地点名')
-    where = models.TextField(max_length=128, verbose_name='具体位置')
+    where = models.TextField(max_length=128, verbose_name='具体位置', null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.name} 详细位置：{self.where}'
 
     class Meta:
-        verbose_name_plural = verbose_name = '3.地点'
+        verbose_name_plural = verbose_name = '地点'
         db_table = 'location'
+        ordering = ['-name']
 
 
 class ApplicationRecord(models.Model):
@@ -123,6 +143,9 @@ class ApplicationRecord(models.Model):
         (False, '未阅'),
         (True, '已阅'),
     )
+
+    def __str__(self):
+        return f'{"%04i" % self.id} {self.title} 发起社团：{self.starterAssociation.name}'
 
     title = models.TextField(max_length=32, verbose_name='申请标题')
     content = models.TextField(verbose_name='申请内容')
@@ -150,7 +173,7 @@ class RegistrationApplication(ApplicationRecord):
                                     verbose_name='申请注册社团')
 
     class Meta:
-        verbose_name = verbose_name_plural = '6.社团注册申请'
+        verbose_name = verbose_name_plural = '社团注册申请'
         db_table = 'registration_app'
 
 
@@ -178,7 +201,7 @@ class EventApplication(ApplicationRecord):
                                             db_column='loc_app', related_name='loc_app', verbose_name='场所使用申请')
 
     class Meta:
-        verbose_name = verbose_name_plural = '7.活动申请'
+        verbose_name = verbose_name_plural = '活动申请'
         db_table = 'event_app'
 
 
@@ -195,7 +218,7 @@ class LocationApplication(ApplicationRecord):
     shareLocation = models.BooleanField(choices=LOCATION_SHARING, default=False, null=False, verbose_name='共用地点')
 
     class Meta:
-        verbose_name = verbose_name_plural = '8.场所申请'
+        verbose_name = verbose_name_plural = '场所申请'
         db_table = 'location_app'
 
 
@@ -203,5 +226,5 @@ class BulletinApplication(ApplicationRecord):
     bulletinMessage = models.TextField()
 
     class Meta:
-        verbose_name = verbose_name_plural = '9.公告发布申请'
+        verbose_name = verbose_name_plural = '公告发布申请'
         db_table = 'bulletin_app'

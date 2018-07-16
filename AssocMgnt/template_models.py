@@ -35,12 +35,25 @@ def tButton(**kwargs):
 def tAButton(**kwargs):
     d = tButton(**kwargs)
     d.update(tag='a', href='#')
+    d.update(**kwargs)
     return d
 
 
 def tSubmitButton(**kwargs):
     d = tButton(**kwargs)
     d.update(tag='submit')
+    d.update(**kwargs)
+    return d
+
+
+def tInfo(**kwargs):
+    d = {'title': '标题',
+         'text': '显示文本',
+         'icon': 'info-circle',
+         'palette': 'primary',
+         'href': '/',
+         }.copy()
+    d.update(kwargs)
     return d
 
 

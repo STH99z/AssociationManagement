@@ -1,0 +1,30 @@
+{% extends 'frame.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-2">
+      {% block content-left %}
+        <div class="card">
+          <h4 class="card-title mt-4">Side Nav</h4>
+          <div class="card-body">
+            {% for foo in '12345' %}
+              <hr class="mt-0 mb-3">
+              <p class="text-left">content {{ foo }}</p>
+            {% endfor %}
+          </div>
+        </div>
+      {% endblock %}
+    </div>
+    <div class="col-10">
+      {% block content-right %}
+        <div class="card">
+          <h4 class="card-title mt-4">Main Content</h4>
+          <div class="card-body">
+            <p>empty content-right block</p>
+          </div>
+        </div>
+      {% endblock %}
+    </div>
+  </div>
+{% endblock content %}

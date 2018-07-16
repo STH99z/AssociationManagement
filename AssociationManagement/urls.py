@@ -15,12 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from AssocMgnt.views import index_views
 
 urlpatterns = [
-    path('', index_views.welcome),
-    path('login/', index_views.login),
-    path('logout/', index_views.logout),
+    path('', include('AssocMgnt.urls.urls_index')),
     path('admin/', include('AssocMgnt.urls.urls_admin')),
     path('stuff/', include('AssocMgnt.urls.urls_stuff')),
     path('founder/', include('AssocMgnt.urls.urls_founder')),
