@@ -1,0 +1,32 @@
+{% extends "frame.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-10">
+      <div class="card">
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/association.html</h4>
+        {% include "models/association.html" %}
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/member.html</h4>
+        {% include "models/member.html" %}
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/user.html</h4>
+        <div class="row ml-2 mr-2">
+          <div class="col-3">{% include "models/user.html" %}</div>
+          <div class="col-3">{% include "models/user.html" %}</div>
+          <div class="col-3">{% include "models/user.html" %}</div>
+          <div class="col-3">{% include "models/user.html" %}</div>
+        </div>
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/location.html</h4>
+        {% include "models/location.html" %}
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/app_assoc.html</h4>
+        {% include "models/app_assoc.html" %}
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/app_location.html</h4>
+        {% include "models/app_location.html" %}
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/app_event.html</h4>
+        {% include "models/app_event.html" %}
+        <h4 class="ml-4 mt-2 mb-2 text-left">models/app_bulletin.html</h4>
+        {% include "models/app_bulletin.html" %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

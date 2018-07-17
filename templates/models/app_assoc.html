@@ -1,0 +1,8 @@
+{% extends "models/app.html" %}
+{% block additional %}
+  <div class="col-12">
+    <hr>
+    <p class="text-left">申请社团信息：</p>
+    {% include "models/association.html" with assoc=app.register_assoc %}
+  </div>
+{% endblock %}

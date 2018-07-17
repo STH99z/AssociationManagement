@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-header primary-color">
+    <i class="fa fa-user-circle-o fa-4x white-ic" aria-hidden="true"></i>
+  </div>
+  <div class="card-body">
+    <h6 class="text-center font-weight-bold">{{ user.uid|default:'15124802XX' }}</h6>
+    <p class="text-left mb-0">{{ user.realName|default:'真实姓名' }}</p>
+    <p class="text-left mb-0">tel：{{ user.tel|default:'1891234567' }}</p>
+    <hr class="mt-0 mb-0">
+    <p class="text-right mb-0">{{ user.createTime|default:'2018-7-16 23:49:40' }} 注册</p>
+  </div>
+</div>

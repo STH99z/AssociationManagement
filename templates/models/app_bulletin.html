@@ -1,0 +1,9 @@
+{% extends "models/app.html" %}
+{% block additional %}
+  <div class="col-12">
+    <hr>
+    <p class="text-left">申请发布公告：</p>
+  </div>
+  <div class="col-12 text-left">
+    {{ app.bulletinMessage|default:'' }}{% if app.bulletinMessage is None %}{% lorem %}{% endif %}</div>
+{% endblock %}

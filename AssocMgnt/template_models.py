@@ -46,9 +46,9 @@ def tSubmitButton(**kwargs):
     return d
 
 
-def tInfo(**kwargs):
-    d = {'title': '标题',
-         'text': '显示文本',
+def tInfo(title='标题', text='显示文本', **kwargs):
+    d = {'title': title,
+         'text': text,
          'icon': 'info-circle',
          'palette': 'primary',
          'href': '/',

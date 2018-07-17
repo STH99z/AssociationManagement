@@ -1,0 +1,36 @@
+{% extends "models/app.html" %}
+{% block additional %}
+  <div class="col-12">
+    <hr>
+    <p class="text-left">申请活动信息：</p>
+  </div>
+  <div class="col-4 text-left">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="cb3" disabled
+             {% if app.official == True %}checked{% endif %}>
+      <label class="custom-control-label black-text" for="cb3">是否为校方举办</label>
+    </div>
+  </div>
+  <div class="col-4 text-left">开始时间：{{ app.fromTime|default:'2018-7-17 10:05:17' }}</div>
+  <div class="col-4 text-left">结束时间：{{ app.toTime|default:'2018-7-17 10:05:17' }}</div>
+  <div class="col-4 text-left mt-2">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="cb5" disabled
+             {% if app.useLocation == True %}checked{% endif %}>
+      <label class="custom-control-label black-text" for="cb5">使用校内地点</label>
+    </div>
+  </div>
+  <div class="col-4 text-left mt-2">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="cb4" disabled
+             {% if app.confirmHeld == True %}checked{% endif %}>
+      <label class="custom-control-label black-text" for="cb4">是否已举办</label>
+    </div>
+  </div>
+  <div class="col-4 text-left mt-2">实际举办时间：{{ app.holdingTime|default:'2018-7-17 10:05:17' }}</div>
+  <div class="col-12 mb-2">
+    <hr>
+    <p class="text-left">地点使用申请：</p>
+    {% include "models/app_location.html" with app=app.loc_app %}
+  </div>
+{% endblock %}

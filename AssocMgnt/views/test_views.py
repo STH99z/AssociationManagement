@@ -11,3 +11,7 @@ def test_top(request: WSGIRequest):
 
 def test_level1(request: WSGIRequest):
     return render(request, 'level1.html', context={})
+
+
+def models(req: WSGIRequest):
+    return render(req, 'models.html', context={})

@@ -16,14 +16,14 @@
           {% if not user.is_anonymous %}
             {% if user.role == 0 %}
               {#社团创立者#}
-              <li class="nav-item">
-                <a class="nav-link" href="#">我的社团</a>
+              <li class="nav-item{% if request.path == '/founder/assoc/list/' %} active{% endif %}">
+                <a class="nav-link" href="/founder/assoc/list">我的社团</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">我的申请</a>
+              <li class="nav-item{% if request.path == '/founder/app/list/' %} active{% endif %}">
+                <a class="nav-link" href="/founder/app/list">我的申请</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">其他社团</a>
+              <li class="nav-item{% if request.path == '/founder/bulletins/' %} active{% endif %}">
+                <a class="nav-link" href="/founder/bulletins">其他社团</a>
               </li>
             {% elif user.role == 1 %}
               {#教务员工#}

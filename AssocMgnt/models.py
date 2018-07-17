@@ -87,15 +87,15 @@ class Association(models.Model):
     name = models.TextField(max_length=128, null=False, verbose_name='社团名称')
     founder = models.ForeignKey(User, on_delete=CASCADE, db_column='founder', related_name='founder',
                                 verbose_name='创立者')
-    introduction = models.TextField(verbose_name='简介')
+    introduction = models.TextField(verbose_name='简介', blank=True)
     parent = models.ForeignKey('self', on_delete=DO_NOTHING, db_column='parent_assoc', related_name='parent_assoc',
-                               verbose_name='父级社团')
+                               verbose_name='父级社团', blank=True, null=True, default=None)
     created = models.BooleanField(verbose_name='是否已创建', default=False)
-    createTime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
-    credit = models.IntegerField(default=100, null=False, verbose_name='信用点数')
-    deletionMark = models.BooleanField(default=False, verbose_name='解散标记')
-    deletionReason = models.TextField(null=True, verbose_name='解散原因')
-    deletionTime = models.DateTimeField(null=True, verbose_name='解散倒计时')
+    createTime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间', blank=True)
+    credit = models.IntegerField(default=100, null=False, verbose_name='信用点数', blank=True)
+    deletionMark = models.BooleanField(default=False, verbose_name='解散标记', blank=True)
+    deletionReason = models.TextField(null=True, verbose_name='解散原因', blank=True)
+    deletionTime = models.DateTimeField(null=True, verbose_name='解散倒计时', blank=True)
 
     def __str__(self):
         return f'社团 {self.name}'
@@ -156,11 +156,11 @@ class ApplicationRecord(models.Model):
                                            verbose_name='申请社团')
     createTime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     result = models.IntegerField(choices=APPLICATION_RESULTS, default=0, verbose_name='审核结果')
-    suggestion = models.TextField(verbose_name='审核意见')
+    suggestion = models.TextField(verbose_name='审核意见', null=True, default=None)
     reviewer = models.ForeignKey(User, on_delete=DO_NOTHING, related_name='%(app_label)s_%(class)s_reviewer',
-                                 verbose_name='审核人')
+                                 verbose_name='审核人', null=True, default=None)
     reviewTime = models.DateTimeField(verbose_name='审核时间',
-                                      auto_now=True)
+                                      auto_now=True, null=True)
     noticed = models.BooleanField(default=False, null=False, verbose_name='学生已阅')
 
     class Meta:
@@ -171,6 +171,15 @@ class ApplicationRecord(models.Model):
 class RegistrationApplication(ApplicationRecord):
     association = models.ForeignKey(Association, on_delete=DO_NOTHING, related_name='register_assoc',
                                     verbose_name='申请注册社团')
+
+    @classmethod
+    def create_one(cls, starter_user, starter_assoc, association):
+        app = RegistrationApplication(title='申请注册社团',
+                                      content=f'申请注册名为“{association.name}”的社团。',
+                                      starterUser=starter_user,
+                                      starterAssociation=starter_assoc,
+                                      association=association)
+        return app
 
     class Meta:
         verbose_name = verbose_name_plural = '社团注册申请'

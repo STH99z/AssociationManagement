@@ -1,0 +1,36 @@
+<div class="card">
+  <div class="card-header white-text primary-color">
+    <h4 class="card-title text-left font-weight-light">{{ app.title|default:'申请标题title' }}</h4>
+    <h6 class="card-subtitle text-left white-text font-weight-light">{{ app.content|default:'申请内容简介content' }}</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4 text-left mb-3">发起社团：{{ app.starterAssociation.name|default:'发起社团名' }}</div>
+      <div class="col-4 text-left">发起人：{{ app.starter_user.uid|default:'发起人uid' }}</div>
+      <div class="col-4 text-left">发起时间：{{ app.createTime|default:'2018-7-17 09:33:40' }}</div>
+      <div class="col-4 text-left">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="cb0" disabled
+                 {% if app.result > 0 %}checked{% endif %}>
+          <label class="custom-control-label black-text" for="cb0">审核人已阅</label>
+        </div>
+      </div>
+      <div class="col-4 text-left">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="cb1" disabled
+                 {% if app.result == 1 %}checked{% endif %}>
+          <label class="custom-control-label black-text" for="cb1">审核通过</label>
+        </div>
+      </div>
+      <div class="col-4 text-left"></div>
+      {% block additional %}
+      {% endblock %}
+      <div class="col-12 text-left">
+        <hr>
+        <p>审核意见：{{ app.suggestion }}{% if app.suggestion is None %}{% lorem %}{% endif %}</p>
+        <p class="text-right">审核人：{{ app.reviewer.uid|default:'教务员工姓名' }}</p>
+        <p class="text-right">审核时间：{{ app.reviewTime|default:'2018-7-17 09:53:27' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+{% extends "models/app.html" %}
+{% block additional %}
+  <div class="col-12">
+    <hr>
+    <p class="text-left">申请地点信息：</p>
+    {% include "models/location.html" with location=app.location %}
+  </div>
+  <div class="col-4 text-left mt-2">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="cb2" disabled
+             {% if app.shareLocation == True %}checked{% endif %}>
+      <label class="custom-control-label black-text" for="cb2">共用地点</label>
+    </div>
+  </div>
+  <div class="col-4 text-left mt-2">开始时间：{{ app.fromTime|default:'2018-7-17 10:05:17' }}</div>
+  <div class="col-4 text-left mt-2">结束时间：{{ app.toTime|default:'2018-7-17 10:05:17' }}</div>
+{% endblock %}
