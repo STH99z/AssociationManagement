@@ -7,22 +7,22 @@
       <div class="col-4 text-left mt-2 mb-2">创立人：{{ assoc.founder.uid|default:'' }}</div>
       <div class="col-8 text-left mt-2 mb-2">社团简介：{{ assoc.introduction|default:'' }}</div>
       <div class="col-4 text-left mt-2 mb-2">父级社团：{% if assoc.parent is not None %}
-        {{ assoc.parent.name|default:'父级社团' }}
+        {{ assoc.parent.name|default:'无' }}
       {% else %}无{% endif %}</div>
       <div class="col-4 text-left mt-2 mb-2">登记状态：
-        {% if assoc.created|default:False %}已登记{% else %}未登记{% endif %}</div>
-      {% if assoc.created %}
+        {% if assoc.created %}已登记{% else %}未登记{% endif %}</div>
+      {% if assoc.created or assoc.displayAll %}
         <div class="col-4 text-left mt-2 mb-2">登记时间：{{ assoc.createTime|default:'' }}</div>
         <div class="col-4 text-left mt-2 mb-2">信用点数：{{ assoc.credit|default:'' }}</div>
       {% else %}
         <div class="col-4 text-left mt-2 mb-2">登记时间：尚在等待</div>
       {% endif %}
     </div>
-    {% if assoc.deletionMark %}
+    {% if assoc.deletionMark or assoc.displayAll %}
       <hr>
       <div class="row">
         <div class="col-4 text-left mt-2 mb-2">被教务要求解散：
-          {% if assoc.deletionMark|default:False %}是{% else %}否{% endif %}</div>
+          {% if assoc.deletionMark %}是{% else %}否{% endif %}</div>
         <div class="col-8 text-left mt-2 mb-2">解散时间：{{ assoc.deletionTime|default:'' }}</div>
         <div class="col-12 text-left mt-2 mb-2">解散原因：{{ assoc.deletionReason|default:'' }}</div>
       </div>

@@ -1,0 +1,22 @@
+{% extends "level1_founder.html" %}
+
+{% block content-left %}
+{% endblock %}
+
+{% block main %}
+  <div class="row">
+    <div class="col-12"><h4>其他社团历史公告</h4></div>
+    {% for message in messages %}
+      <div class="col-12 mb-4">
+        <p class="text-left">{{ message.bulletinMessage }}</p>
+        <p class="text-right">发布社团：{{ message.starterAssociation.name }}</p>
+        <p class="text-right">发布时间：{{ message.createTime }}</p>
+        <hr>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-left">没有发布的公告。</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

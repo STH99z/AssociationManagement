@@ -1,0 +1,47 @@
+{% extends "level1_founder.html" %}
+
+{% block side %}
+  <div class="list-group">
+    <a href="/founder/assoc/{{ assoc_id }}/" class="list-group-item waves-effect">社团信息</a>
+    <a href="/founder/assoc/{{ assoc_id }}/edit/" class="list-group-item waves-effect">社团信息编辑</a>
+    <a href="/founder/assoc/{{ assoc_id }}/members/" class="list-group-item waves-effect">社员成员编辑</a>
+    <a href="/founder/assoc/{{ assoc_id }}/bulletin/" class="list-group-item waves-effect">社团公告列表</a>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <form action="" method="post">
+    <div class="row">
+      <div class="col-12"><h4>社团成员编辑</h4></div>
+      {% for member in members %}
+        <div class="col-4 mb-4">
+          {% include "models/member.html" %}
+        </div>
+      {% empty %}
+        <div class="col-12">
+          <p class="text-left">没有登记的成员。</p>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="row">
+      <div class="col-5">
+        <div class="md-form">
+          <input type="text" id="i1" name="name" class="form-control">
+          <label for="i1">新成员姓名</label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="md-form">
+          <input type="text" id="i2" name="tel" class="form-control">
+          <label for="i2">新成员联系电话</label>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="mt-2">
+          {% include "button_snippet.html" %}
+        </div>
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+{% endblock %}

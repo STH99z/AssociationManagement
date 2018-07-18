@@ -104,6 +104,15 @@ class Association(models.Model):
         verbose_name = verbose_name_plural = '社团'
         db_table = 'association'
 
+    def update(self, **kwargs):
+        import logging
+        updated = {}
+        for k, v in kwargs.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
+                updated[k] = v
+        logging.getLogger(__name__).info(updated)
+
 
 class Member(models.Model):
     association = models.ForeignKey(Association, on_delete=CASCADE, db_column='association', related_name='association',

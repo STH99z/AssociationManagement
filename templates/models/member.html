@@ -1,4 +1,9 @@
-<div class="row" style="max-width: 600px">
-  <div class="col-4 text-left">{{ member.name|default:'成员姓名' }}</div>
-  <div class="col-8 text-left">{{ member.tel|default:'联系电话' }}</div>
+<div class="card">
+  <div class="card-header primary-color">
+    <i class="fa fa-user-circle-o fa-4x white-ic" aria-hidden="true"></i>
+  </div>
+  <div class="card-body">
+    <p class="text-left mb-0">{{ member.name|default:'成员姓名' }}</p>
+    <p class="text-left mb-0">tel：{{ member.tel|default:'联系电话' }}</p>
+  </div>
 </div>

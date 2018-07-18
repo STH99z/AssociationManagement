@@ -29,23 +29,60 @@ def assoc_list(request: WSGIRequest):
 
 
 def assoc_id(request: WSGIRequest, assoc_id: int):
-    return render(request, 'level1_founder.html', {})
+    assoc = get_object_or_404(Association, id=assoc_id)
+    if assoc.created == False:
+        return render(request, 'big_info.html',
+                      {'info': tInfo('访问失败！', '这个社团还没有被审批创建，不能访问。', href='/founder/app/list/')})
+    assoc.displayAll = True
+    return render(request, 'founder/assoc_id.html',
+                  {'assoc_id': assoc_id,
+                   'assoc': assoc})
 
 
 class assoc_id_edit(View):
     def get(self, request: WSGIRequest, assoc_id: int):
-        return render(request, 'level1_founder.html', {})
+        assoc = get_object_or_404(Association, id=assoc_id)
+        button = tSubmitButton(text='提交修改')
+        return render(request, 'founder/assoc_id_edit.html',
+                      {'button': button,
+                       'assoc': assoc,
+                       'assoc_id': assoc_id})
 
     def post(self, request: WSGIRequest, assoc_id: int):
-        return render(request, 'level1_founder.html', {})
+        assoc = get_object_or_404(Association, id=assoc_id)
+        kw = fromRequest(request)
+        assoc.update(**kw)
+        assoc.save()
+        return render(request, 'big_info.html',
+                      {'info': tInfo('修改已提交', '您可以返回立即看到修改。', href='')})
 
 
-def assoc_id_members(request: WSGIRequest, assoc_id: int):
-    return render(request, 'level1_founder.html', {})
+class assoc_id_members(View):
+    def get(self, request: WSGIRequest, assoc_id: int):
+        members = Member.objects.filter(association_id=assoc_id).all()
+        button = tSubmitButton(text='添加成员')
+        return render(request, 'founder/assoc_id_member.html',
+                      {'button': button,
+                       'members': members,
+                       'assoc_id': assoc_id})
+
+    def post(self, request: WSGIRequest, assoc_id: int):
+        kw = fromRequest(request)
+        m = Member(**kw)
+        m.association_id = assoc_id
+        m.save()
+        return render(request, 'big_info.html',
+                      {'info': tInfo('新成员已添加', '您可以返回立即看到修改。', href='')})
 
 
-def assoc_id_bulletin(request: WSGIRequest, assoc_id: int):
-    return render(request, 'level1_founder.html', {})
+class assoc_id_bulletin(View):
+    def get(self, request: WSGIRequest, assoc_id: int):
+        button = tAButton(text='申请发布新公告', href='/founder/app/bulletin/create/')
+        messages = BulletinApplication.objects.filter(starterAssociation_id=assoc_id, result=1).all()
+        return render(request, 'founder/assoc_id_bulletin.html',
+                      {'button': button,
+                       'messages': messages,
+                       'assoc_id': assoc_id})
 
 
 def app_list(request: WSGIRequest, app_type: int = 0):
@@ -150,4 +187,8 @@ class app_bulletin_create(View):
 
 
 def bulletins(request: WSGIRequest):
-    return render(request, 'level1_founder.html', {})
+    ids = [a.id for a in Association.objects.filter(founder=request.user).all()]
+    messages = BulletinApplication.objects.filter(result=1).exclude(starterAssociation_id__in=ids).all()
+    return render(request, 'founder/bulletins.html',
+                  {'messages': messages,
+                   'assoc_id': assoc_id})
