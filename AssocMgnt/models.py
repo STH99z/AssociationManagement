@@ -17,9 +17,9 @@ class User(AbstractUser):
     )
 
     uid = models.CharField(max_length=16, null=False, verbose_name='学号/员工号')
-    realName = models.CharField(max_length=32, null=True, verbose_name='真实姓名')
+    realName = models.CharField(max_length=32, null=True, blank=True, verbose_name='真实姓名')
     role = models.IntegerField(choices=ROLES, default=0, verbose_name='角色')
-    tel = models.CharField(max_length=48, null=True, verbose_name='联系电话')
+    tel = models.CharField(max_length=48, null=True, blank=True, verbose_name='联系电话')
     createTime = models.DateTimeField(auto_now_add=True, verbose_name='注册时间')
 
     def __str__(self):
@@ -144,23 +144,26 @@ class ApplicationRecord(models.Model):
         (True, '已阅'),
     )
 
+    class_name = 'ApplicationRecord'
+
     def __str__(self):
-        return f'{"%04i" % self.id} {self.title} 发起社团：{self.starterAssociation.name}'
+        return f'{"%04i" % self.id} {self.title} ' \
+               f'发起社团：{self.starterAssociation.name if self.starterAssociation is not None else "无"}'
 
     title = models.TextField(max_length=32, verbose_name='申请标题')
     content = models.TextField(verbose_name='申请内容')
-    starterUser = models.ForeignKey(User, on_delete=DO_NOTHING, null=True,
+    starterUser = models.ForeignKey(User, on_delete=DO_NOTHING, null=True, blank=True,
                                     related_name='%(app_label)s_%(class)s_starter_user',
                                     verbose_name='申请人')
-    starterAssociation = models.ForeignKey(Association, on_delete=CASCADE, null=True, default=None,
+    starterAssociation = models.ForeignKey(Association, on_delete=CASCADE, null=True, blank=True, default=None,
                                            verbose_name='申请社团')
     createTime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     result = models.IntegerField(choices=APPLICATION_RESULTS, default=0, verbose_name='审核结果')
-    suggestion = models.TextField(verbose_name='审核意见', null=True, default=None)
+    suggestion = models.TextField(verbose_name='审核意见', null=True, blank=True, default=None)
     reviewer = models.ForeignKey(User, on_delete=DO_NOTHING, related_name='%(app_label)s_%(class)s_reviewer',
-                                 verbose_name='审核人', null=True, default=None)
+                                 verbose_name='审核人', null=True, blank=True, default=None)
     reviewTime = models.DateTimeField(verbose_name='审核时间',
-                                      auto_now=True, null=True)
+                                      auto_now=True, null=True, blank=True)
     noticed = models.BooleanField(default=False, null=False, verbose_name='学生已阅')
 
     class Meta:
@@ -171,6 +174,8 @@ class ApplicationRecord(models.Model):
 class RegistrationApplication(ApplicationRecord):
     association = models.ForeignKey(Association, on_delete=DO_NOTHING, related_name='register_assoc',
                                     verbose_name='申请注册社团')
+
+    class_name = 'RegistrationApplication'
 
     @classmethod
     def create_one(cls, starter_user, starter_assoc, association):
@@ -187,6 +192,7 @@ class RegistrationApplication(ApplicationRecord):
 
 
 class EventApplication(ApplicationRecord):
+    class_name = 'EventApplication'
     OFFICIAL_HOLDING = (
         (False, '非官方'),
         (True, '官方'),
@@ -200,13 +206,15 @@ class EventApplication(ApplicationRecord):
         (True, '使用校内地点'),
     )
 
+    name = models.TextField(default='', verbose_name='活动名称')
     official = models.BooleanField(choices=OFFICIAL_HOLDING, default=False, verbose_name='是否为校方举办')
     fromTime = models.DateTimeField(verbose_name='开始时间')
     toTime = models.DateTimeField(verbose_name='结束时间')
-    confirmHeld = models.BooleanField(choices=HOLDING_STATUS, verbose_name='是否已举办')
-    holdingTime = models.DateTimeField(verbose_name='实际举办时间')
+    confirmHeld = models.BooleanField(choices=HOLDING_STATUS, verbose_name='是否已举办', default=False)
+    holdingTime = models.DateTimeField(verbose_name='实际举办时间', null=True, blank=True, default=None)
     useLocation = models.BooleanField(choices=USING_LOCATION, default=True, verbose_name='使用校内地点')
-    locationApplication = models.ForeignKey('LocationApplication', on_delete=DO_NOTHING, null=True, default=None,
+    locationApplication = models.ForeignKey('LocationApplication', on_delete=DO_NOTHING, null=True, blank=True,
+                                            default=None,
                                             db_column='loc_app', related_name='loc_app', verbose_name='场所使用申请')
 
     class Meta:
@@ -215,6 +223,7 @@ class EventApplication(ApplicationRecord):
 
 
 class LocationApplication(ApplicationRecord):
+    class_name = 'LocationApplication'
     LOCATION_SHARING = (
         (False, '独占'),
         (True, '共用'),
@@ -232,6 +241,7 @@ class LocationApplication(ApplicationRecord):
 
 
 class BulletinApplication(ApplicationRecord):
+    class_name = 'BulletinApplication'
     bulletinMessage = models.TextField()
 
     class Meta:

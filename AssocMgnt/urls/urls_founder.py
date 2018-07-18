@@ -13,6 +13,7 @@ urlpatterns = [
     path(r'assoc/<int:assoc_id>/edit/', assoc_id_edit.as_view()),
     path(r'assoc/<int:assoc_id>/members/', assoc_id_members),
     path(r'assoc/<int:assoc_id>/bulletin/', assoc_id_bulletin),
+    path(r'app/list/<int:app_type>/', app_list),
     path(r'app/list/', app_list),
     path(r'app/<int:app_id>/', app_id),
     path(r'app/assoc/create/', app_assoc_create.as_view()),

@@ -1,5 +1,9 @@
 {% extends "level1_founder.html" %}
 
+
+{% block content-left %}
+{% endblock %}
+
 {% block main %}
   <!-- Material form register -->
   <form action="#" method="post">
@@ -37,14 +41,9 @@
       </div>
     </div>
     {% csrf_token %}
-    <input type="hidden" name="founder" value="{{ request.user.id }}">
   </form>
   <!-- Material form register -->
 {% endblock %}
 {% block extra-scripts %}
-  <script type="javascript">
-      $(document).ready(function () {
-          $('.mdb-select').material_select();
-      });
-  </script>
+
 {% endblock %}

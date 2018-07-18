@@ -1,0 +1,51 @@
+{% extends "level1_founder.html" %}
+
+
+{% block content-left %}
+{% endblock %}
+
+{% block main %}
+  <!-- Material form register -->
+  <form action="#" method="post">
+    <p class="h4 text-center mb-4">申请使用场所</p>
+
+    <div class="row">
+
+      <div class="col-4">
+        <div class="md-form">
+          <span class="align-middle mr-2">场所</span>
+          <select class="" title="通过审核的场所使用申请" name="location">
+            <option value="" disabled selected>无</option>
+            {% for loc in loc_list %}
+              <option value="{{ loc.id }}">{{ loc.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-4">
+        <label for="i2">开始时间</label>
+        <input type="datetime-local" id="i2" name="fromTime" class="form-control">
+      </div>
+      <div class="col-4">
+        <label for="i3">结束时间</label>
+        <input type="datetime-local" id="i3" name="toTime" class="form-control">
+      </div>
+      <div class="col-4">
+        <div class="custom-control custom-checkbox align-middle text-left mt-4">
+          <input type="checkbox" class="custom-control-input" id="c2" name="shareLocation">
+          <label class="custom-control-label" for="c2">共用场所（非独占该场所）</label>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" type="submit">发送申请</button>
+        </div>
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+  <!-- Material form register -->
+{% endblock %}
+{% block extra-scripts %}
+
+{% endblock %}

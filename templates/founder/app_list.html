@@ -1,0 +1,45 @@
+{% extends "level1_founder.html" %}
+
+{% block side %}
+  <div class="list-group">
+    <a href="/founder/app/list/0/" class="list-group-item waves-effect">社团创建申请</a>
+    <a href="/founder/app/list/1/" class="list-group-item waves-effect">活动举办申请</a>
+    <a href="/founder/app/list/2/" class="list-group-item waves-effect">场所使用申请</a>
+    <a href="/founder/app/list/3/" class="list-group-item waves-effect">公告发布申请</a>
+  </div>
+{% endblock %}
+{% block main %}
+  <div class="row">
+    <div class="col-12">{% include "button_snippet.html" with button=new_button %}</div>
+    <div class="col-12"><h4 class="text-left mb-2">未处理的申请</h4></div>
+    {% for app1 in app1_list %}
+      <div class="col-12">
+        {% include "models/app_include.html" with app=app1 %}
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-left ml-4">无。</p>
+      </div>
+    {% endfor %}
+    <div class="col-12"><h4 class="text-left mb-2">未通过的申请</h4></div>
+    {% for app2 in app2_list %}
+      <div class="col-12">
+        {% include "models/app_include.html" with app=app2 %}
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-left ml-4">无。</p>
+      </div>
+    {% endfor %}
+    <div class="col-12"><h4 class="text-left mb-2">通过的申请</h4></div>
+    {% for app3 in app3_list %}
+      <div class="col-12">
+        {% include "models/app_include.html" with app=app3 %}
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-left ml-4">无。</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

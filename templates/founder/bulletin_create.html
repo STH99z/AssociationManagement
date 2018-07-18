@@ -1,0 +1,32 @@
+{% extends "level1_founder.html" %}
+
+
+{% block content-left %}
+{% endblock %}
+
+{% block main %}
+  <!-- Material form register -->
+  <form action="#" method="post">
+    <p class="h4 text-center mb-4">申请发布公告</p>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="md-form">
+          <textarea type="text" id="textareaBasic" class="form-control md-textarea" rows="3"
+                    name="bulletinMessage"></textarea>
+          <label for="textareaBasic">详细公告内容</label>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" type="submit">发送申请</button>
+        </div>
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+  <!-- Material form register -->
+{% endblock %}
+{% block extra-scripts %}
+
+{% endblock %}

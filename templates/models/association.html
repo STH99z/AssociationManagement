@@ -1,24 +1,30 @@
 <div class="card">
-  <h4 class="card-header primary-color white-text">{{ assoc.name|default:'社团名称' }}</h4>
+  <h4 class="card-header primary-color">
+    <a class="white-text" href="/founder/assoc/{{ assoc.id }}/">{{ assoc.name|default:'' }}</a>
+  </h4>
   <div class="card-body">
     <div class="row">
-      <div class="col-4 text-left mt-2 mb-2">创立人：{{ assoc.founder.uid|default:'创立人' }}</div>
-      <div class="col-8 text-left mt-2 mb-2">社团简介：{{ assoc.introduction|default:'社团简介' }}</div>
+      <div class="col-4 text-left mt-2 mb-2">创立人：{{ assoc.founder.uid|default:'' }}</div>
+      <div class="col-8 text-left mt-2 mb-2">社团简介：{{ assoc.introduction|default:'' }}</div>
       <div class="col-4 text-left mt-2 mb-2">父级社团：{% if assoc.parent is not None %}
         {{ assoc.parent.name|default:'父级社团' }}
       {% else %}无{% endif %}</div>
       <div class="col-4 text-left mt-2 mb-2">登记状态：
         {% if assoc.created|default:False %}已登记{% else %}未登记{% endif %}</div>
-      <div class="col-4 text-left mt-2 mb-2">登记时间：{{ assoc.createTime|default:'登记时间' }}</div>
-      <div class="col-4 text-left mt-2 mb-2">信用点数：{{ assoc.credit|default:'100' }}</div>
+      {% if assoc.created %}
+        <div class="col-4 text-left mt-2 mb-2">登记时间：{{ assoc.createTime|default:'' }}</div>
+        <div class="col-4 text-left mt-2 mb-2">信用点数：{{ assoc.credit|default:'' }}</div>
+      {% else %}
+        <div class="col-4 text-left mt-2 mb-2">登记时间：尚在等待</div>
+      {% endif %}
     </div>
     {% if assoc.deletionMark %}
       <hr>
       <div class="row">
         <div class="col-4 text-left mt-2 mb-2">被教务要求解散：
           {% if assoc.deletionMark|default:False %}是{% else %}否{% endif %}</div>
-        <div class="col-8 text-left mt-2 mb-2">解散时间：{{ assoc.deletionTime|default:'解散时间' }}</div>
-        <div class="col-12 text-left mt-2 mb-2">解散原因：{{ assoc.deletionReason|default:'解散原因' }}</div>
+        <div class="col-8 text-left mt-2 mb-2">解散时间：{{ assoc.deletionTime|default:'' }}</div>
+        <div class="col-12 text-left mt-2 mb-2">解散原因：{{ assoc.deletionReason|default:'' }}</div>
       </div>
     {% endif %}
   </div>

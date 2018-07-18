@@ -1,0 +1,11 @@
+{% if app.class_name == 'ApplicationRecord' %}
+  {% include "models/app.html" with app=app %}
+{% elif app.class_name == 'RegistrationApplication' %}
+  {% include "models/app_assoc.html" with app=app %}
+{% elif app.class_name == 'EventApplication' %}
+  {% include "models/app_event.html" with app=app %}
+{% elif app.class_name == 'LocationApplication' %}
+  {% include "models/app_location.html" with app=app %}
+{% elif app.class_name == 'BulletinApplication' %}
+  {% include "models/app_bulletin.html" with app=app %}
+{% endif %}

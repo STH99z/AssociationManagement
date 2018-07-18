@@ -1,0 +1,62 @@
+{% extends "level1_founder.html" %}
+
+
+{% block content-left %}
+{% endblock %}
+
+{% block main %}
+  <!-- Material form register -->
+  <form action="#" method="post">
+    <p class="h4 text-center mb-4">申请举办活动</p>
+
+    <div class="row">
+      <div class="col-8">
+        <div class="md-form">
+          <input type="text" id="i1" name="name" class="form-control">
+          <label for="i1">活动名称</label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="custom-control custom-checkbox align-middle text-left mt-5">
+          <input type="checkbox" class="custom-control-input" id="c1" name="official">
+          <label class="custom-control-label" for="c1">是否为校方举办</label>
+        </div>
+      </div>
+      <div class="col-4">
+        <label for="i2">开始时间</label>
+        <input type="datetime-local" id="i2" name="fromTime" class="form-control">
+      </div>
+      <div class="col-4">
+        <label for="i3">结束时间</label>
+        <input type="datetime-local" id="i3" name="toTime" class="form-control">
+      </div>
+      <div class="col-4">
+        <div class="custom-control custom-checkbox align-middle text-left mt-4">
+          <input type="checkbox" class="custom-control-input" id="c2" name="useLocation">
+          <label class="custom-control-label" for="c2">使用校内场所</label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="md-form">
+          <span class="align-middle mr-2">通过审核的场所使用申请</span>
+          <select class="" title="通过审核的场所使用申请" name="locationApplication">
+            <option value="" disabled selected>无</option>
+            {% for loc_app in loc_app_list %}
+              <option value="{{ loc_app.id }}">{{ loc_app.location }} {{ loc_app.fromTime }}-{{ loc_app.toTime }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" type="submit">发送申请</button>
+        </div>
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+  <!-- Material form register -->
+{% endblock %}
+{% block extra-scripts %}
+
+{% endblock %}
