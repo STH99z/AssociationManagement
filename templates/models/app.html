@@ -32,12 +32,55 @@
           <p class="text-right">审核人：{{ app.reviewer.uid|default:'' }}</p>
           <p class="text-right">审核时间：{{ app.reviewTime|default:'2018-7-17 09:53:27' }}</p>
         </div>
-      {% else %}
+      {% elif request.user.role == 0 %}
         <div class="col-12 text-left">
           <hr>
           <p class="mb-0">申请还在审核中，请过一段时间再登录。</p>
         </div>
       {% endif %}
+      {% if request.user.role == 1 and not details %}
+        <div class="col-9"></div>
+        <div class="col-3">
+          <a href="/staff/app/{{ app.id }}?type={{ app.app_type }}"
+             class="btn btn-primary btn-rounded mt-4">
+            {% if app.result == 0 %}
+              进行审核
+            {% else %}
+              再次审核
+            {% endif %}
+          </a>
+        </div>
+      {% elif request.user.role == 1 and details %}
+        <div class="col-12 text-left">
+        <form action="" method="post" style="width: 100%;">
+          <hr>
+          <div class="row">
+            <div class="col-2"><p>审核结果：</p></div>
+            <div class="col-4">
+              <div class="md-form mt-0 mb-0">
+                <select title="通过审核的场所使用申请" name="result">
+                  <option value="1" selected>通过</option>
+                  <option value="2">不通过</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-6"></div>
+            <div class="col-12">
+              <div class="md-form">
+                  <textarea type="text" id="textareaBasic" class="form-control md-textarea" rows="3"
+                            name="suggestion">{{ assoc.deletionReason }}</textarea>
+                <label for="textareaBasic">审核意见</label>
+              </div>
+            </div>
+            <div class="col-9"></div>
+            <div class="col-3">
+              {% include "button_snippet.html" %}
+            </div>
+          </div>
+          <input type="hidden" value="{{ request.user.id }}" name="reviewer_id">
+          {% csrf_token %}
+        </form>
+      {% endif %}
+      </div>
     </div>
   </div>
-</div>

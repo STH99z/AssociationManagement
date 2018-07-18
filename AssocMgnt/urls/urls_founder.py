@@ -1,4 +1,5 @@
 from django.urls import path
+from django.http import HttpResponseRedirect
 from AssocMgnt.views import render
 from AssocMgnt.views.founder_views import *
 
@@ -7,7 +8,15 @@ def empty_view(request, *args, **kwargs):
     return render(request, 'level1.html', kwargs)
 
 
+def redirect(url):
+    def view(request):
+        return HttpResponseRedirect(url)
+
+    return view
+
+
 urlpatterns = [
+    path(r'', redirect('/founder/assoc/list/')),
     path(r'assoc/list/', assoc_list),
     path(r'assoc/<int:assoc_id>/', assoc_id),
     path(r'assoc/<int:assoc_id>/edit/', assoc_id_edit.as_view()),

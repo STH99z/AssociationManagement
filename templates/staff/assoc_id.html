@@ -1,0 +1,24 @@
+{% extends "level1_staff.html" %}
+
+{% block side %}
+  <div class="list-group">
+    <a href="/staff/assoc/{{ assoc_id }}/" class="list-group-item waves-effect">社团信息</a>
+    <a href="/staff/assoc/{{ assoc_id }}/bulletin/" class="list-group-item waves-effect">社团公告列表</a>
+    <a href="/staff/assoc/{{ assoc_id }}/dismiss/" class="list-group-item waves-effect">警告社团解散</a>
+  </div>
+{% endblock %}
+
+{% block content-right %}
+  {% include "models/association.html" %}
+  <div class="row">
+    {% for member in members %}
+      <div class="col-4 mb-4">
+        {% include "models/member.html" %}
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-left">没有登记的成员。</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

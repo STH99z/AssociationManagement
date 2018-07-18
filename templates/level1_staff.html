@@ -1,0 +1,25 @@
+{% extends 'level1.html' %}
+{% load static %}
+
+{% block title %}教务员工 后台{% endblock %}
+
+{% block content-left %}
+  <div class="card">
+    <div class="card-body">
+      {% block side %}
+
+      {% endblock %}
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block content-right %}
+  <div class="card">
+    <div class="card-body">
+      {% block main %}
+
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

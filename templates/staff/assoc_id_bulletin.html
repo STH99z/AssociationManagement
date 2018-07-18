@@ -1,0 +1,27 @@
+{% extends "level1_staff.html" %}
+
+{% block side %}
+  <div class="list-group">
+    <a href="/staff/assoc/{{ assoc_id }}/" class="list-group-item waves-effect">社团信息</a>
+    <a href="/staff/assoc/{{ assoc_id }}/bulletin/" class="list-group-item waves-effect">社团公告列表</a>
+    <a href="/staff/assoc/{{ assoc_id }}/dismiss/" class="list-group-item waves-effect">警告社团解散</a>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <div class="row">
+    <div class="col-12"><h4>社团历史公告信息查看</h4></div>
+    {% for message in messages %}
+      <div class="col-12 mb-4">
+        <p class="text-left">{{ message.bulletinMessage }}</p>
+        <p class="text-right">发布时间：{{ message.createTime }}</p>
+        <hr>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-left">没有发布的公告。</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+

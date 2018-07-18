@@ -1,0 +1,28 @@
+{% extends "level1_staff.html" %}
+{% block side %}
+
+{% endblock %}
+
+{% block content-left %}
+{% endblock %}
+
+{% block main %}
+  <div class="card-title"><h4>社团列表</h4></div>
+  <div class="row">
+    {% for assoc in assoc_list %}
+      <div class="col-4">
+        <div class="card mb-4">
+          <h5 class="font-weight-normal mt-2 mb-2"><a class="black-text"
+                                                      href="/staff/assoc/{{ assoc.id }}/">{{ assoc.name }}</a></h5>
+          <p class="text-left ml-3">创建人uid：{{ assoc.founder.uid }}</p>
+          <p class="text-left ml-3">登记时间：{{ assoc.createTime }}</p>
+          <a class="text-right mb-2 mr-3" href="/staff/assoc/{{ assoc.id }}/">详细信息</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p>系统内没有登记的社团。</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

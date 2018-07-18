@@ -15,6 +15,11 @@ class User(AbstractUser):
         (ROLE_STAFF, '教务员工'),
         (ROLE_ADMIN, '系统管理员')
     )
+    ROLES_TEXT = {
+        0: 'founder',
+        1: 'staff',
+        2: 'admin',
+    }
 
     uid = models.CharField(max_length=16, null=False, verbose_name='学号/员工号')
     realName = models.CharField(max_length=32, null=True, blank=True, verbose_name='真实姓名')
@@ -28,6 +33,10 @@ class User(AbstractUser):
     class Meta:
         verbose_name_plural = verbose_name = '用户'
         db_table = 'user'
+
+    @property
+    def role_text(self):
+        return self.ROLES_TEXT[self.role]
 
     @staticmethod
     def create_phone():
@@ -104,6 +113,10 @@ class Association(models.Model):
         verbose_name = verbose_name_plural = '社团'
         db_table = 'association'
 
+    @property
+    def is_valid(self):
+        return datetime.now() < self.deletionTime
+
     def update(self, **kwargs):
         import logging
         updated = {}
@@ -178,6 +191,23 @@ class ApplicationRecord(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = '申请'
         abstract = True
+
+    def update(self, **kwargs):
+        import logging
+        updated = {}
+        for k, v in kwargs.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
+                updated[k] = v
+        logging.getLogger(__name__).info(updated)
+
+    @property
+    def app_type(self):
+        types = [RegistrationApplication, EventApplication, LocationApplication, BulletinApplication]
+        for i, t in enumerate(types):
+            if isinstance(self, t):
+                return i
+        return -1
 
 
 class RegistrationApplication(ApplicationRecord):

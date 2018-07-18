@@ -2,7 +2,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.views import View
 from AssocMgnt.models import *
 from AssocMgnt.template_models import *
-from . import render
+from . import render, require_role
 from django.template import Template, Engine, Context
 from django.shortcuts import get_list_or_404, get_object_or_404
 import logging
@@ -21,7 +21,8 @@ def fromRequest(request: WSGIRequest):
 
 def assoc_list(request: WSGIRequest):
     user = request.user
-    assoc_list = Association.objects.filter(founder=user, created=True).all()
+    assoc_list = Association.objects.filter(founder=user, created=True) \
+        .exclude(deletionMark=True, deletionTime__lte=datetime.now()).all()
     button = tAButton(text='申请创建社团', href='/founder/app/assoc/create')
     return render(request, 'founder/assoc_list.html',
                   {'assoc_list': assoc_list,
@@ -32,7 +33,7 @@ def assoc_id(request: WSGIRequest, assoc_id: int):
     assoc = get_object_or_404(Association, id=assoc_id)
     if assoc.created == False:
         return render(request, 'big_info.html',
-                      {'info': tInfo('访问失败！', '这个社团还没有被审批创建，不能访问。', href='/founder/app/list/')})
+                      {'info': tInfo('访问失败！', '这个社团还没有被审批创建，不能访问。', href='/founder/app/list/', palette='warning')})
     assoc.displayAll = True
     return render(request, 'founder/assoc_id.html',
                   {'assoc_id': assoc_id,
@@ -137,7 +138,7 @@ class app_event_create(View):
         kw['starterAssociation'] = Association.objects.filter(founder=request.user, created=True).first()
         if kw.get('locationApplication', -1) == -1:
             return render(request, 'big_info.html',
-                          {'info': tInfo('申请失败！', '需要一个通过审核的场所使用申请！', href='')})
+                          {'info': tInfo('申请失败！', '需要一个通过审核的场所使用申请！', href='', palette='warning')})
         kw['locationApplication'] = LocationApplication.objects.filter(id=kw['locationApplication']).first()
         kw['title'] = '申请举办活动'
         kw['content'] = f'申请举办 “{kw["name"]}” 活动'
@@ -159,7 +160,7 @@ class app_location_create(View):
         kw['starterAssociation'] = Association.objects.filter(founder=request.user, created=True).first()
         if kw.get('location', -1) == -1:
             return render(request, 'big_info.html',
-                          {'info': tInfo('申请失败！', '需要选择一个场所！', href='')})
+                          {'info': tInfo('申请失败！', '需要选择一个场所！', href='', palette='warning')})
         kw['location'] = get_object_or_404(Location, id=kw['location'])
         kw['title'] = '申请使用场所'
         kw['content'] = f'{kw["location"].name}'

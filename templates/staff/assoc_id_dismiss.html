@@ -1,0 +1,46 @@
+{% extends "level1_staff.html" %}
+
+{% block side %}
+  <div class="list-group">
+    <a href="/staff/assoc/{{ assoc_id }}/" class="list-group-item waves-effect">社团信息</a>
+    <a href="/staff/assoc/{{ assoc_id }}/bulletin/" class="list-group-item waves-effect">社团公告列表</a>
+    <a href="/staff/assoc/{{ assoc_id }}/dismiss/" class="list-group-item waves-effect">警告社团解散</a>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <form action="" method="post">
+
+    <div class="row">
+      <div class="col-12"><h4>警告社团解散</h4></div>
+      <div class="col-4">
+        <span class="mr-2">信用点数：{{ assoc.credit|default:'' }}</span>
+        {% if assoc.credit >= 80 %}
+          <span class="badge badge-success">信用良好</span>
+        {% elif assoc.credit >= 50 %}
+          <span class="badge badge-warning">信用一般</span>
+        {% else %}
+          <span class="badge badge-danger">信用较差</span>
+        {% endif %}
+      </div>
+      <div class="col-12">
+        <div class="md-form">
+          <textarea type="text" id="textareaBasic" class="form-control md-textarea" rows="3"
+                    name="deletionReason">{{ assoc.deletionReason|default:'详细解散原因，如：信用过低、学校要求等' }}</textarea>
+          <label for="textareaBasic">解散原因</label>
+        </div>
+      </div>
+      <div class="col-8"></div>
+      <div class="col-4">
+        <label for="i2">解散期限（默认一周后）</label>
+        <input type="datetime-local" id="i2" name="deletionTime" class="form-control" value="{{ deletionTime }}">
+      </div>
+      <div class="col-8"></div>
+      <div class="col-4">
+        {% include "button_snippet.html" %}
+      </div>
+    </div>
+    {% csrf_token %}
+  </form>
+{% endblock %}
+

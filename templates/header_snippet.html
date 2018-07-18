@@ -27,17 +27,11 @@
               </li>
             {% elif user.role == 1 %}
               {#教务员工#}
-              <li class="nav-item">
-                <a class="nav-link" href="#">社团列表</a>
+              <li class="nav-item{% if request.path == '/staff/assoc/list/' %} active{% endif %}">
+                <a class="nav-link" href="/staff/assoc/list">社团列表</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">社团公告表</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">审核</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#"></a>
+              <li class="nav-item{% if request.path == '/staff/app/list/' %} active{% endif %}">
+                <a class="nav-link" href="/staff/app/list">审核</a>
               </li>
             {% endif %}
           {% endif %}
