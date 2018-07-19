@@ -6,6 +6,7 @@ from . import render, require_role
 from django.template import Template, Engine, Context
 from django.shortcuts import get_list_or_404, get_object_or_404
 import logging
+from pytz import timezone
 
 engine = Engine.get_default()
 logger = logging.getLogger(__name__)
@@ -22,7 +23,7 @@ def fromRequest(request: WSGIRequest):
 def assoc_list(request: WSGIRequest):
     user = request.user
     assoc_list = Association.objects.filter(founder=user, created=True) \
-        .exclude(deletionMark=True, deletionTime__lte=datetime.now()).all()
+        .exclude(deletionMark=True, deletionTime__lte=utcnow()).all()
     button = tAButton(text='申请创建社团', href='/founder/app/assoc/create')
     return render(request, 'founder/assoc_list.html',
                   {'assoc_list': assoc_list,
@@ -126,6 +127,10 @@ class app_assoc_create(View):
                       {'info': tInfo(title='申请已发送', text='请耐心给等待教务员工审核。', href='/founder/app/list/')})
 
 
+def utcnow():
+    return datetime.utcnow().replace(tzinfo=timezone('UTC'))
+
+
 class app_event_create(View):
     def get(self, request: WSGIRequest):
         loc_app_list = LocationApplication.objects.filter(starterUser=request.user, result=1).all()
@@ -134,12 +139,15 @@ class app_event_create(View):
 
     def post(self, request: WSGIRequest):
         kw = fromRequest(request)
+        print(kw)
         kw['starterUser'] = request.user
         kw['starterAssociation'] = Association.objects.filter(founder=request.user, created=True).first()
-        if kw.get('locationApplication', -1) == -1:
-            return render(request, 'big_info.html',
-                          {'info': tInfo('申请失败！', '需要一个通过审核的场所使用申请！', href='', palette='warning')})
-        kw['locationApplication'] = LocationApplication.objects.filter(id=kw['locationApplication']).first()
+        kw['useLocation'] = kw.get('useLocation', 'off') == 'on'
+        if kw.get('useLocation', False):
+            if kw.get('locationApplication', -1) == -1:
+                return render(request, 'big_info.html',
+                              {'info': tInfo('申请失败！', '需要一个通过审核的场所使用申请！', href='', palette='warning')})
+            kw['locationApplication'] = LocationApplication.objects.filter(id=kw['locationApplication']).first()
         kw['title'] = '申请举办活动'
         kw['content'] = f'申请举办 “{kw["name"]}” 活动'
         ea = EventApplication(**kw)
@@ -156,6 +164,7 @@ class app_location_create(View):
 
     def post(self, request: WSGIRequest):
         kw = fromRequest(request)
+        print(kw)
         kw['starterUser'] = request.user
         kw['starterAssociation'] = Association.objects.filter(founder=request.user, created=True).first()
         if kw.get('location', -1) == -1:
@@ -164,6 +173,7 @@ class app_location_create(View):
         kw['location'] = get_object_or_404(Location, id=kw['location'])
         kw['title'] = '申请使用场所'
         kw['content'] = f'{kw["location"].name}'
+        kw['shareLocation'] = kw['shareLocation'] == 'on'
         la = LocationApplication(**kw)
         la.save()
         return render(request, 'big_info.html',

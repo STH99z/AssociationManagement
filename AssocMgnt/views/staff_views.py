@@ -6,6 +6,7 @@ from . import render, require_role, require_permission, require_role_in_class, r
     check_permission
 from django.template import Template, Engine, Context
 from django.shortcuts import get_list_or_404, get_object_or_404
+from pytz import timezone
 from .founder_views import fromRequest
 import logging
 
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 @require_role(User.ROLE_STAFF)
 def assoc_list(req: WSGIRequest):
     assoc_list = Association.objects.filter(created=True) \
-        .exclude(deletionMark=True, deletionTime__lt=datetime.now()).all()
+        .exclude(deletionMark=True, deletionTime__lt=utcnow()).all()
     return render(req, 'staff/assoc_list.html',
                   {'assoc_list': assoc_list})
 
@@ -47,7 +48,7 @@ class assoc_id_dismiss_class(View):
     def get(self, req: WSGIRequest, assoc_id: int):
         assoc = get_object_or_404(Association, id=assoc_id)
         assoc.displayAll = True
-        deletionTime = datetime.now() + timedelta(days=7)
+        deletionTime = utcnow() + timedelta(days=7)
         return render(req, 'staff/assoc_id_dismiss.html',
                       {'assoc': assoc,
                        'assoc_id': assoc_id,
@@ -78,21 +79,27 @@ def app_list(req: WSGIRequest, app_type: int = 0):
                    'app3_list': app3_list})
 
 
+def utcnow():
+    return datetime.utcnow().replace(tzinfo=timezone('UTC'))
+
+
 class app_id_class(View):
     @require_role_in_class(User.ROLE_STAFF)
     def get(self, req: WSGIRequest, app_id: int):
         app_type = int(req.GET['type'])
         app_type = [RegistrationApplication, EventApplication, LocationApplication, BulletinApplication][app_type]
         app = get_object_or_404(app_type, id=app_id)
+        b = utcnow()
         return render(req, 'staff/app_id.html',
                       {'app': app,
                        'details': True,
-                       'button': tSubmitButton(text='提交审核', href='')})
+                       'button': tSubmitButton(text='提交审核', href=''),
+                       'now': b})
 
     @require_role_in_class(User.ROLE_STAFF)
     def post(self, req: WSGIRequest, app_id: int):
         kw = fromRequest(req)
-        kw['reviewTime'] = datetime.now()
+        kw['reviewTime'] = utcnow()
         app_type = int(req.GET['type'])
         app_type = [RegistrationApplication, EventApplication, LocationApplication, BulletinApplication][app_type]
         app = get_object_or_404(app_type, id=app_id)
@@ -107,10 +114,12 @@ class app_id_class(View):
                           {'info': tInfo('操作失败！', '你没有这项操作权限。如果需要，联系系统管理员以提升权限。', href='/staff/app/list/',
                                          palette='warning')})
 
+        print(kw)
+
         if isinstance(app, RegistrationApplication):
             if kw['result'] == '1':
                 app.association.created = True
-                app.association.createTime = datetime.now()
+                app.association.createTime = utcnow()
                 app.association.save()
             elif kw['result'] == '0':
                 if app.association.created:
@@ -124,6 +133,13 @@ class app_id_class(View):
                         return render(req, 'big_info.html',
                                       {'info': tInfo('操作失败！', '时间段和%s的时间段冲突！' % loc2.title,
                                                      href='', palette='warning')})
+        if isinstance(app, EventApplication):
+            if app.toTime <= utcnow() and kw['confirmHeld'] == 'False':
+                print('扣除10点')
+                app.starterAssociation.credit -= 10
+                app.starterAssociation.save()
+        if kw.get('holdingTime', '') == '':
+            kw['holdingTime'] = None
         app.update(**kw)
         app.save()
         return render(req, 'big_info.html',

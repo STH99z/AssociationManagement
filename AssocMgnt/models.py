@@ -115,7 +115,7 @@ class Association(models.Model):
 
     @property
     def is_valid(self):
-        return datetime.now() < self.deletionTime
+        return utcnow() < self.deletionTime
 
     def update(self, **kwargs):
         import logging
@@ -251,7 +251,7 @@ class EventApplication(ApplicationRecord):
     toTime = models.DateTimeField(verbose_name='结束时间')
     confirmHeld = models.BooleanField(choices=HOLDING_STATUS, verbose_name='是否已举办', default=False)
     holdingTime = models.DateTimeField(verbose_name='实际举办时间', null=True, blank=True, default=None)
-    useLocation = models.BooleanField(choices=USING_LOCATION, default=True, verbose_name='使用校内地点')
+    useLocation = models.BooleanField(choices=USING_LOCATION, default=False, verbose_name='使用校内地点')
     locationApplication = models.ForeignKey('LocationApplication', on_delete=DO_NOTHING, null=True, blank=True,
                                             default=None,
                                             db_column='loc_app', related_name='loc_app', verbose_name='场所使用申请')
