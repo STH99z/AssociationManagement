@@ -148,8 +148,12 @@ class app_event_create(View):
                 return render(request, 'big_info.html',
                               {'info': tInfo('申请失败！', '需要一个通过审核的场所使用申请！', href='', palette='warning')})
             kw['locationApplication'] = LocationApplication.objects.filter(id=kw['locationApplication']).first()
+            print(kw['locationApplication'])
+            # kw ['locationApplication_id'] = int(kw['locationApplication'])
         kw['title'] = '申请举办活动'
         kw['content'] = f'申请举办 “{kw["name"]}” 活动'
+
+        print(kw)
         ea = EventApplication(**kw)
         ea.save()
         return render(request, 'big_info.html',
@@ -173,7 +177,7 @@ class app_location_create(View):
         kw['location'] = get_object_or_404(Location, id=kw['location'])
         kw['title'] = '申请使用场所'
         kw['content'] = f'{kw["location"].name}'
-        kw['shareLocation'] = kw['shareLocation'] == 'on'
+        kw['shareLocation'] = kw.get('shareLocation', 'off') == 'on'
         la = LocationApplication(**kw)
         la.save()
         return render(request, 'big_info.html',
